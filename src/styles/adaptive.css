@@ -1,0 +1,92 @@
+@media (max-width: 1200px) {
+    .navigation {
+        flex-wrap: wrap !important;
+        max-width: 100%;
+        justify-content: center !important;
+        gap: 20px 20px !important;
+    }
+
+}
+
+@media (max-width: 992px) {
+    .sidebar-mini.sidebar-collapse .main-sidebar, .sidebar-mini.sidebar-collapse .main-sidebar::before {
+        margin-left: 0;
+        width: 0;
+    }
+
+    body:not(.sidebar-mini-md):not(.sidebar-mini-xs):not(.layout-top-nav) .content-wrapper, body:not(.sidebar-mini-md):not(.sidebar-mini-xs):not(.layout-top-nav) .main-footer, body:not(.sidebar-mini-md):not(.sidebar-mini-xs):not(.layout-top-nav) .main-header {
+        margin-left: 0px !important;
+    }
+
+    .header {
+        padding-bottom: 0px !important;
+        padding-left: 20px!important;
+    }
+
+    .burger {
+        display: block !important;
+    }
+    aside {
+        background-color: white;
+    }
+
+    .sidebar-open #sidebar-overlay {
+            display: block;
+    }
+
+    .main {
+        padding: 20px 20px 0 20px !important;
+    }
+
+    .navigation {
+        margin-top: 20px !important ;
+        flex-direction: row;
+    }
+
+}
+
+@media screen and (max-width: 778px) {
+    .card-action {
+        border: 1px solid #ced4da;
+        border-radius: 12px;
+        padding: 15px 0px 15px 15px;
+        width: 200px;
+    }
+
+}
+
+@media screen and (max-width: 767px) {
+    .income-circle {
+        border-right: 0px !important;
+    }
+}
+
+@media screen and (max-width: 694px) {
+    .container-fluid {
+        justify-content: center;
+    }
+
+    .main-title {
+        text-align: center;
+    }
+}
+
+@media screen and (max-width: 474px) {
+    .card-action {
+        width: 300px !important;
+    }
+
+    .main {
+        padding-left: 0px !important;
+        padding-right: 0px !important;
+    }
+}
+
+
+@media screen and (max-width: 390px) {
+    .title {
+        font-size: 26px;
+    }
+
+}
+
