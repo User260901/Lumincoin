@@ -1,11 +1,12 @@
 import {Router} from "./router";
-import {Login} from "./components/login";
-import {Signup} from "./components/signup";
-import {AuthUtils} from "./utils/auth-utils";
+import {Login} from "./components/auth/login";
+import {Signup} from "./components/auth/signup";
+
 
 
 class App {
     constructor() {
+
         const url = location.pathname.split("/").pop()
 
         if(url && url === 'login.html'){

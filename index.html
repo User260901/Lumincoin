@@ -5,10 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title id="title">AdminLTE 3 | Fixed Sidebar</title>
 
-
     <link rel="stylesheet" href="./css/adminlte.min.css" id="adminlte-style">
     <link rel="stylesheet" href="./css/style.css" id="main-style">
     <link rel="stylesheet" href="./css/adaptive.css" id="main-adaptive">
+
 
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
@@ -18,11 +18,12 @@
             <img src="./static/images/logo.png" alt="Логотип">
         </a>
         <div class="sidebar mt-5">
+
             <nav>
-                <ul class="nav nav-pills nav-sidebar flex-column " data-widget="treeview" role="menu"
-                    data-accordion="false">
+                <ul class="nav nav-pills nav-sidebar flex-column " data-widget="treeview" role="menu" data-accordion="false">
+
                     <li class="nav-item ">
-                        <a href="#/" class="nav-link ">
+                        <a href="#/" class="nav-link menu-item" id="menu" >
                                 <span class="mr-2">
                                     <svg width="15" height="14" viewBox="0 0 15 14" fill="#052C65"
                                          xmlns="http://www.w3.org/2000/svg">
@@ -38,8 +39,9 @@
                                 </span>
                             Главная
                         </a>
+
                     <li class="nav-item">
-                        <a href="#/table" class="nav-link ">
+                        <a href="#/table" class="nav-link menu-item" id="table-list">
                                 <span class="mr-2">
                                     <svg width="16" height="16" viewBox="0 0 16 16" fill="#052C65"
                                          xmlns="http://www.w3.org/2000/svg">
@@ -57,31 +59,33 @@
                             Доходы & Расходы
                         </a>
                     <li class="nav-item w-75 dropdown">
-                        <a href="javascript:void(0);" class="nav-link dropdown-toggle d-flex justify-content-between mb-0 active"  data-toggle="dropdown" data-bs-toggle="collapse" data-bs-target="#categoryDropdown" aria-expanded="false">
+                        <a href="javascript:void(0);" class="nav-link dropdown-toggle d-flex justify-content-between mb-0 menu-item" id="category-menu" data-toggle="dropdown" data-bs-toggle="collapse" data-bs-target="#categoryDropdown" aria-expanded="false">
                             Категории
-                            <span >
-                                    <svg width="7" height="14" viewBox="0 0 7 14" fill="052C65"
+                            <span>
+                                <svg width="7" height="14" viewBox="0 0 7 14" fill="052C65"
                                          xmlns="http://www.w3.org/2000/svg">
       <path fill-rule="evenodd" clip-rule="evenodd"
             d="M0.145124 13.3538C0.0510821 13.26 -0.00177002 13.1327 -0.00177002 12.9998C-0.00177002 12.867 0.0510821 12.7396 0.145124 12.6458L5.79212 6.99984L0.145124 1.35384C0.0186517 1.22737 -0.0307412 1.04303 0.0155508 0.870266C0.0618427 0.697502 0.196787 0.562558 0.369551 0.516266C0.542315 0.469974 0.726652 0.519366 0.853124 0.645839L6.85312 6.64584C6.94717 6.73964 7.00002 6.86701 7.00002 6.99984C7.00002 7.13267 6.94717 7.26003 6.85312 7.35384L0.853124 13.3538C0.75932 13.4479 0.631951 13.5007 0.499124 13.5007C0.366296 13.5007 0.238928 13.4479 0.145124 13.3538Z"
       /> </svg>
-                                </span>
+                            </span>
                         </a>
                         <div class="dropdown-menu p-0 mt-0 border-primary" style="width: 220px">
-                            <a href="#/income" class="dropdown-item">Доходы</a>
-                            <a href="#/expenses" class="dropdown-item expenses">Расходы</a>
+                            <a href="#/income" class="dropdown-item menu-item" id="income">Доходы</a>
+                            <a href="#/expenses" class="dropdown-item expenses menu-item" id="expenses">Расходы</a>
                         </div>
                     </li>
                 </ul>
+
             </nav>
             <div class="user-info w-100">
                 <div class="balance border-bottom border-disabled pb-4">
-                    Баланс: <span>500$</span>
+                    Баланс: <span id="balance">500</span>$
                 </div>
 
                 <div class="user d-flex align-items-center justify-content-center pt-4" style="width: 220px;">
                     <div class="dropdown">
-                        <svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg" data-toggle="dropdown" aria-expanded="false">
+                        <svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg"
+                             data-toggle="dropdown" aria-expanded="false">
                             <circle cx="18" cy="18" r="18" fill="#D9D9D9"/>
                             <path d="M18 18C19.0609 18 20.0783 17.5786 20.8284 16.8284C21.5786 16.0783 22 15.0609 22 14C22 12.9391 21.5786 11.9217 20.8284 11.1716C20.0783 10.4214 19.0609 10 18 10C16.9391 10 15.9217 10.4214 15.1716 11.1716C14.4214 11.9217 14 12.9391 14 14C14 15.0609 14.4214 16.0783 15.1716 16.8284C15.9217 17.5786 16.9391 18 18 18ZM20.6667 14C20.6667 14.7072 20.3857 15.3855 19.8856 15.8856C19.3855 16.3857 18.7072 16.6667 18 16.6667C17.2928 16.6667 16.6145 16.3857 16.1144 15.8856C15.6143 15.3855 15.3333 14.7072 15.3333 14C15.3333 13.2928 15.6143 12.6145 16.1144 12.1144C16.6145 11.6143 17.2928 11.3333 18 11.3333C18.7072 11.3333 19.3855 11.6143 19.8856 12.1144C20.3857 12.6145 20.6667 13.2928 20.6667 14ZM26 24.6667C26 26 24.6667 26 24.6667 26H11.3333C11.3333 26 10 26 10 24.6667C10 23.3333 11.3333 19.3333 18 19.3333C24.6667 19.3333 26 23.3333 26 24.6667ZM24.6667 24.6613C24.6653 24.3333 24.4613 23.3467 23.5573 22.4427C22.688 21.5733 21.052 20.6667 18 20.6667C14.9467 20.6667 13.312 21.5733 12.4427 22.4427C11.5387 23.3467 11.336 24.3333 11.3333 24.6613H24.6667Z"
                                   fill="#6C757D"/>
@@ -115,7 +119,7 @@
     </div>
 </div>
 
-<script src="js/jquery.min.js" id="jquery"> </script>
-<script src="js/bootstrap.bundle.min.js" id="bootstrapJs"> </script>
+<script src="js/jquery.min.js" id="jquery"></script>
+<script src="js/bootstrap.bundle.min.js" id="bootstrapJs"></script>
 </body>
 </html>

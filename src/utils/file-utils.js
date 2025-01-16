@@ -1,4 +1,3 @@
-import {Router} from "../router";
 
 export class FileUtils {
     static fileScriptUpload(src) {
@@ -14,12 +13,11 @@ export class FileUtils {
     static removeScripts() {
         const scriptsInBody = document.querySelectorAll('body script');
         scriptsInBody.forEach(script => {
-            if (script.id !== 'jquery' && script.id !== "bootstrapJs") {
+            if (script.id !== 'jquery' && script.id !== "bootstrapJs" && script.id !== 'ui') {
                 script.remove()
             }
         })
     }
-
 
     static fileStyleUpload(src, insertBeforeElement) {
         let linkElement = document.createElement('link');
