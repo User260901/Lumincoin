@@ -13,11 +13,13 @@ export class Main {
 
         this.incomeChart = null;
         this.expenseChart = null;
+        this.intervalType = null
         this.init()
+
 
     }
 
-    findElements(){
+    findElements() {
         this.inputElementDateFrom = document.getElementById('datepickerFrom')
         this.inputElementDateTo = document.getElementById('datepickerTo')
         this.dateFromElement = document.getElementById('dateFrom')
@@ -28,22 +30,34 @@ export class Main {
     }
 
     init() {
-        const todayInterval = CommonUtils.getIntervalInfo('Сегодня')
-        if(todayInterval && (todayInterval.dateFrom && todayInterval)) {
+        let todayInterval = CommonUtils.getIntervalInfo('Сегодня')
+        if (todayInterval && (todayInterval.dateFrom && todayInterval)) {
             this.getTableByFilter(todayInterval.dateFrom, todayInterval.dateTo).then()
             this.todayButton.classList.add('bg-secondary')
-
         }
 
         this.buttonElements.forEach(buttonElement => {
             buttonElement.addEventListener('click', (e) => {
-                this.buttonElements.forEach(button => {button.classList.remove('bg-secondary')})
+                this.buttonElements.forEach(button => {
+                    button.classList.remove('bg-secondary')
+                })
                 buttonElement.classList.add('bg-secondary')
-
                 if (buttonElement.innerText === 'Все') {
-                    this.getTableByFilter().then()
-
+                    this.intervalType = "all"
+                } else if (buttonElement.innerText === "Сегодня") {
+                    this.intervalType = null
+                    if (todayInterval && (todayInterval.dateFrom && todayInterval)) {
+                        this.getTableByFilter(todayInterval.dateFrom, todayInterval.dateTo).then()
+                        this.todayButton.classList.add('bg-secondary')
+                    }
+                } else if (buttonElement.innerText === 'Неделя') {
+                    this.intervalType = "week"
+                } else if (buttonElement.innerText === 'Месяц') {
+                    this.intervalType = "month"
+                } else if (buttonElement.innerText === 'Год') {
+                    this.intervalType = "year"
                 } else if (buttonElement.innerText === 'Интервал') {
+                    this.intervalType = null;
                     this.findButtonElement.addEventListener('click', (e) => {
                         if (this.intervalValidation()) {
                             this.dateFromElement.innerText = this.inputElementDateFrom.value
@@ -53,16 +67,11 @@ export class Main {
                         }
                     })
 
-                } else {
-                    let result = CommonUtils.getIntervalInfo(buttonElement.innerText)
-                    if (result && (result.dateFrom && result.dateTo)) {
-                        this.getTableByFilter(result.dateFrom, result.dateTo).then()
-                    }
                 }
+                this.getTableByFilter().then()
             })
         })
     }
-
 
     intervalValidation() {
         let isValid = true
@@ -90,10 +99,12 @@ export class Main {
     }
 
     async getTableByFilter(dateFrom, dateTo) {
-        this.dateFromData = dateFrom;
-        this.dateTodata = dateTo
         let url = '/operations'
-        if (dateTo && dateFrom) {
+        if (this.intervalType) {
+            url = url + '?period=' + this.intervalType
+        }
+        if (dateFrom && dateTo && !this.intervalType) {
+
             url = url + '?period=interval&dateFrom=' + dateFrom + '&dateTo=' + dateTo
         }
         let result = await HttpRequests.request(url)
@@ -109,14 +120,14 @@ export class Main {
             const expenses = []
             const income = []
             data.forEach((item) => {
-                if(item.type === 'expense'){
+                if (item.type === 'expense') {
                     expenses.push(item)
-                }else if(item.type === 'income'){
+                } else if (item.type === 'income') {
                     income.push(item)
                 }
             })
 
-            if(expenses && expenses.length > 0 || income && income.length > 0) {
+            if (expenses && expenses.length > 0 || income && income.length > 0) {
                 this.chart(expenses, income)
             }
         }
@@ -129,14 +140,21 @@ export class Main {
             datasets: [
                 {
                     data: [],
-                    backgroundColor : ['#dc3545', '#fd7e14', '#20c997', '#0d6efd', '#ffc107', '#ff6384', '#ffcd56', '#9966ff','#dc3545', '#fd7e14', '#20c997', '#0d6efd', '#ffc107', '#ff6384', '#ffcd56', '#9966ff', ],
+                    backgroundColor: ['#dc3545', '#fd7e14', '#20c997', '#0d6efd', '#ffc107', '#ff6384', '#ffcd56', '#9966ff', '#dc3545', '#fd7e14', '#20c997', '#0d6efd', '#ffc107', '#ff6384', '#ffcd56', '#9966ff',],
                 }
             ]
         }
 
-        incomeData.forEach((item) => {
-            dataIncome.labels.push(item.category)
-            dataIncome.datasets[0].data.push(item.amount)
+        incomeData.forEach((item, index) => {
+            if (item.category) {
+                const indexOf = dataIncome.labels.indexOf(item.category)
+                if (indexOf !== -1) {
+                    dataIncome.datasets[0].data[indexOf] += item.amount
+                } else {
+                    dataIncome.labels.push(item.category)
+                    dataIncome.datasets[0].data.push(item.amount)
+                }
+            }
         })
 
         const incomeCanvas = $('#chartIncome').get(0).getContext('2d');
@@ -159,14 +177,21 @@ export class Main {
             datasets: [
                 {
                     data: [],
-                    backgroundColor : ['#ffcd56', '#9966ff','#dc3545', '#fd7e14', '#20c997', '#0d6efd', '#ffc107', '#ff6384','#dc3545', '#fd7e14', '#20c997', '#0d6efd', '#ffc107', '#ff6384', '#ffcd56', '#9966ff', ],
+                    backgroundColor: ['#dc3545', '#fd7e14', '#20c997', '#0d6efd', '#ffc107', '#ff6384', '#ffcd56', '#9966ff', '#dc3545', '#fd7e14', '#20c997', '#0d6efd', '#ffc107', '#ff6384', '#ffcd56', '#9966ff',],
                 }
             ]
         }
 
-        expensesData.forEach((item) => {
-            dataExpenses.labels.push(item.category)
-            dataExpenses.datasets[0].data.push(item.amount)
+        expensesData.forEach((item, index) => {
+            if(item.category){
+                const indexOf = dataExpenses.labels.indexOf(item.category)
+                if (indexOf !== -1) {
+                    dataExpenses.datasets[0].data[indexOf] += item.amount
+                } else {
+                    dataExpenses.labels.push(item.category)
+                    dataExpenses.datasets[0].data.push(item.amount)
+                }
+            }
         })
 
         const expenseCanvas = $('#chartExpenses').get(0).getContext('2d');
@@ -185,5 +210,5 @@ export class Main {
         }
 
 
-     }
+    }
 }

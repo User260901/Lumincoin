@@ -9,7 +9,6 @@ export class EditIncomeOrExpenses {
 
         document.getElementById('table-list').classList.add('active')
 
-
         const queryString = (document.location.hash).split("?")[1];
         if (queryString) {
             this.params = new URLSearchParams(queryString);
@@ -20,12 +19,13 @@ export class EditIncomeOrExpenses {
             this.categoryId = this.params.get('id')
             this.categoryComment = this.params.get("comment");
         }
-        if (!this.categoryType && !this.category && !this.categoryAmount && !this.categoryDate) {
+        if (!this.categoryType || this.category === 'undefined' || !this.categoryAmount || !this.categoryDate) {
             location.hash = '#/table'
+            return;
         }
 
-        this.findElements()
 
+        this.findElements()
         this.fillInputs()
         this.getCategories().then()
 
@@ -37,7 +37,6 @@ export class EditIncomeOrExpenses {
         this.amountInputElement = document.getElementById("amount");
         this.dateInputElement = document.getElementById("date");
         this.commentInputElement = document.getElementById("comment");
-
         this.saveButtonElement = document.getElementById('save')
     }
 
@@ -48,16 +47,15 @@ export class EditIncomeOrExpenses {
         } else {
             alert('Извините, что-то пошло не так. Попробуйте снова!')
         }
-        this.selectTypeElement.addEventListener('change', this.handleChangingCategory.bind(this));
     }
 
     fillInputs() {
         const options = this.categoryInputElement.options
-
         for (let i = 0; i < options.length; i++) {
             let option = options[i].value.split('-')[0]
             if(option === this.category) {
                 this.categoryInputElement.value = options[i].value
+                this.categoryInputElement.setAttribute('disabled', 'disabled')
                 return
             }
         }
@@ -69,15 +67,10 @@ export class EditIncomeOrExpenses {
         }
     }
 
-    async handleChangingCategory(e) {
-        this.params.set('type', e.target.value);
-        const updatedQueryString = this.params.toString();
-        location.hash = `#/edit-income-or-expenses?${updatedQueryString}`;
-    }
-
     createCategory(data) {
         if (data) {
             this.selectTypeElement.value = this.categoryType
+            this.selectTypeElement.setAttribute('disabled', 'disabled')
             for (let i = 0; i < data.length; i++) {
                 let optionElement = document.createElement("option");
                 optionElement.value = data[i].title + "-" + data[i].id;
