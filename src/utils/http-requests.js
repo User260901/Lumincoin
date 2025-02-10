@@ -1,10 +1,12 @@
 import Config from "../config/config";
+import {AuthUtils} from "./auth-utils";
 
 export class HttpRequests {
-    static async request(url, method = "GET", body = null) {
+    static async request(url, method = "GET", useAuth = true, body = null) {
         const result = {
             response: null,
             error: false,
+            status: null
         }
 
         const params = {
@@ -12,6 +14,14 @@ export class HttpRequests {
             headers: {
                 'Content-type': 'application/json',
                 'Accept': 'application/json',
+            },
+        }
+
+        let token = null
+        if(useAuth) {
+             token = AuthUtils.getInfo(AuthUtils.accessTokenKey);
+            if(token) {
+                params.headers['x-auth-token'] = token;
             }
         }
 
@@ -24,28 +34,25 @@ export class HttpRequests {
             response = await fetch(Config.api + url, params)
             result.response = await response.json()
         }catch (e){
-            result.error = e;
+            result.error = e
             return result
         }
 
-        if(response.status < 200 || response.status >= 300){
-            result.error = true;
-            return result
+        if(response && response.status === 401) {
+            if(useAuth && !token){
+                location.href = '/login.html';
+            }else {
+               let updatedTokens = await AuthUtils.refreshToken()
+                if(updatedTokens){
+                   return await this.request(url, method, useAuth, body)
+                }else {
+                    location.hash = '#/logout'
+                }
+            }
         }
 
         return result
-
     }
 
 }
 
-
-//     body: JSON.stringify({
-//     name: this.name.value.split(' ')[1],
-//     lastName: this.name.value.split(' ')[0],
-//     email:	this.email.value,
-//     password: this.password.value,
-//     passwordRepeat:	this.repeatPassword.value
-// })
-// }).then(response => response.json())
-// console.log(result)

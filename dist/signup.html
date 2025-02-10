@@ -11,11 +11,11 @@
     <link rel="stylesheet" href="./css/adaptive.css" id="main-adaptive">
 
 <script defer src="app.bundle.js"></script></head>
-<body class="hold-transition sidebar-mini layout-fixed">
+<body class="login-page">
 
 <div class="login-box">
     <div class="login-logo m-0">
-        <img src="../static/images/logo.png" alt="Лого">
+        <img src="./static/images/logo.png" alt="Лого">
     </div>
     <div class=" error-content">
         <span id="common-error" class="text-danger">Что-то пошло не так, попробуйте другие данные.</span>
@@ -69,7 +69,8 @@
                     </div>
                     <input type="password" class="form-control" id="password" placeholder="Пароль">
                 </div>
-                <div class="invalid text-danger d-none">Пароль неверный</div>
+                <div class="invalid text-danger d-none">пароль должен быть не менее 8 символов, содержать как минимум 1 букву в верхнем регистре и как минимум 1 цифру
+                </div>
             </div>
             <div class="input-group mb-3">
                 <div class="input-group flex-nowrap">
@@ -95,12 +96,12 @@
 
 
         <p class="mb-1 mt-2 already-have">
-            Уже есть аккаунт? <a href="#/login">Войдите в систему</a>
+            Уже есть аккаунт? <a href="/login.html">Войдите в систему</a>
         </p>
     </div>
 </div>
 
 
-<script src="src/auth/auth.js" type="module"></script>
+
 </body>
 </html>

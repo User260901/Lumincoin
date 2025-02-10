@@ -72,6 +72,7 @@ body {
     font-size: 28px;
     color: #ced4da;
     cursor: pointer;
+    min-height: 125px;
 }
 .modal-text {
     font-weight: 500;
@@ -115,7 +116,6 @@ body {
 
 .container-fluid {
     flex-wrap: wrap;
-    max-width: 1450px!important;
     margin: 0 !important;
     gap: 20px;
 }
@@ -129,10 +129,20 @@ body {
     border-bottom-left-radius: 0 !important;
 }
 
+.dropdown-toggle[aria-expanded="true"] {
+    color: #fff !important;
+}
+
 .dropdown-menu {
     border-radius: 0px 0px 7px 7px !important;
     box-shadow: unset !important;
 }
+
+.dropdown-item:hover {
+    background-color: #007bff ;
+    color: white;
+}
+
 .expenses {
     border-bottom-right-radius: 6px;
     border-bottom-left-radius: 6px;
@@ -167,3 +177,10 @@ body {
     max-height: 350px !important;
     height: 350px !important;
 }
+
+
+.filter span {
+    text-decoration: underline;
+    color: grey;
+}
+
