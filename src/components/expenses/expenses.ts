@@ -1,31 +1,47 @@
 import {HttpRequests} from "../../utils/http-requests";
+import {CategoryResponseType} from "../../types/response-types/category-response.type";
+import {DefaultResponseType} from "../../types/response-types/default-response.type";
 
 export class Expenses {
+    private categoryMenuElement: HTMLElement | null = null;
+    private expensesElement: HTMLElement | null = null;
+    private contentElement: HTMLElement | null = null;
+
     constructor() {
         document.querySelectorAll('.menu-item').forEach(el => {
             el.classList.remove('active');
         })
 
-        document.getElementById('category-menu').classList.add('active')
-        document.getElementById('expenses').classList.add('active')
+        this.categoryMenuElement = document.getElementById('category-menu')
+        if (this.categoryMenuElement) {
+            this.categoryMenuElement.classList.add('active')
+        }
+
+        this.expensesElement = document.getElementById('expenses')
+        if (this.expensesElement) {
+            this.expensesElement.classList.add('active')
+        }
 
         this.contentElement = document.getElementById("expenses-container");
         this.getExpenses().then()
     }
 
-    async getExpenses() {
-        let result = await HttpRequests.request('/categories/expense');
-        if (!result.error) {
-            this.init(result.response)
+    private async getExpenses(): Promise<void> {
+        let result: CategoryResponseType[] | DefaultResponseType = await HttpRequests.request('/categories/expense');
+        if ((result as DefaultResponseType).error !== undefined) {
+            throw new Error((result as DefaultResponseType).message)
         }
+
+        this.init((result as CategoryResponseType[]))
+
     }
 
-    init(dataExpense) {
+    init(dataExpense: CategoryResponseType[]) {
         if (dataExpense && dataExpense.length > 0) {
             dataExpense.forEach(item => {
                 const cardElement = document.createElement('div');
                 cardElement.classList.add('card-action');
-                cardElement.setAttribute('id', item.id)
+                cardElement.setAttribute('id', item.id.toString())
 
                 const titleElement = document.createElement('h2');
                 titleElement.classList.add('title', "mb-3");
@@ -75,7 +91,7 @@ export class Expenses {
                 modalActionElement.classList.add('modal-action');
 
                 const buttonDeleteElement = document.createElement('a');
-                buttonDeleteElement.setAttribute('href', '#/expenses/delete?id='+ item.id)
+                buttonDeleteElement.setAttribute('href', '#/expenses/delete?id=' + item.id)
                 buttonDeleteElement.classList.add('btn', 'btn-success', 'mr-3');
                 buttonDeleteElement.innerText = 'Да, удалить'
 
@@ -98,7 +114,9 @@ export class Expenses {
 
                 cardActionElement.appendChild(modalElement)
 
-                this.contentElement.appendChild(cardElement)
+                if (this.contentElement) {
+                    this.contentElement.appendChild(cardElement)
+                }
 
             })
 
@@ -108,7 +126,10 @@ export class Expenses {
         createCardElement.innerText = '+'
         createCardElement.setAttribute('id', 'add-income');
         createCardElement.setAttribute('href', '#/create-category-expenses');
-        this.contentElement.appendChild(createCardElement)
+        if (this.contentElement) {
+            this.contentElement.appendChild(createCardElement)
+
+        }
 
     }
 

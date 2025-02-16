@@ -1,6 +1,6 @@
 import {AuthUtils} from "../../utils/auth-utils";
-import {HttpRequests} from "../../utils/http-requests";
 import config from "../../config/config";
+import {DefaultResponseType} from "../../types/response-types/default-response.type";
 
 export class Logout {
     constructor() {
@@ -8,11 +8,11 @@ export class Logout {
 
     }
 
-    async init(){
+    private async init():Promise<void>{
         if(AuthUtils.refreshTokenKey) {
-            let result = null
+            let result: DefaultResponseType | null = null
             try {
-                let response = await fetch(config.api + '/logout', {
+                let response: Response = await fetch(config.api + '/logout', {
                     method: 'POST',
                     headers: {
                         'Accept': 'application/json',
@@ -23,11 +23,12 @@ export class Logout {
                     })
                 })
                 result = await response.json()
-
-                if(!result.error){
-                    console.log(result.message)
+                if((result as DefaultResponseType).error ){
+                    console.log((result as DefaultResponseType).message)
+                    return
                 }
-            }catch (e){
+
+            }catch (e:any){
                 throw new Error(e)
             }
         }
