@@ -3,17 +3,15 @@ import {Login} from "./components/auth/login";
 import {Signup} from "./components/auth/signup";
 
 
-
 class App {
     constructor() {
+        const url: string | undefined = location.pathname.split("/").pop()
 
-        const url = location.pathname.split("/").pop()
-
-        if(url && url === 'login.html'){
+        if (url && url === 'login.html') {
             new Login()
-        }else if(url && url === 'signup.html'){
+        } else if (url && url === 'signup.html') {
             new Signup()
-        }else {
+        } else {
             new Router()
         }
     }

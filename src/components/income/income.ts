@@ -1,33 +1,48 @@
 import {HttpRequests} from "../../utils/http-requests";
+import {CategoryResponseType} from "../../types/response-types/category-response.type";
+import {DefaultResponseType} from "../../types/response-types/default-response.type";
 
 
 export class Income {
+    private categoryMenu: HTMLElement | null = null;
+    private incomeElement: HTMLElement | null = null;
+    private contentElement: HTMLElement | null = null;
+
+
     constructor() {
         document.querySelectorAll('.menu-item').forEach(el => {
             el.classList.remove('active');
         })
 
-        document.getElementById('category-menu').classList.add('active')
-        document.getElementById('income').classList.add('active')
+        this.categoryMenu = document.getElementById('category-menu')
+        if (this.categoryMenu) {
+            this.categoryMenu.classList.add('active');
+        }
+        this.incomeElement = document.getElementById('income');
+        if (this.incomeElement) {
+            this.incomeElement.classList.add('active');
+        }
 
         this.contentElement = document.getElementById("income-container");
         this.getIncome().then()
 
     }
 
-    async getIncome() {
-        let result = await HttpRequests.request('/categories/income');
-        if (!result.error) {
-            this.showIncome(result.response)
+    private async getIncome(): Promise<void> {
+        let result: CategoryResponseType[] | DefaultResponseType = await HttpRequests.request('/categories/income');
+        if ((result as DefaultResponseType).error !== undefined) {
+            throw new Error((result as DefaultResponseType).message)
         }
+        this.showIncome((result as CategoryResponseType[]))
+
     }
 
-    showIncome(dataIncome) {
+    showIncome(dataIncome: CategoryResponseType []) {
         if (dataIncome && dataIncome.length > 0) {
             dataIncome.forEach(item => {
                 const cardElement = document.createElement('div');
                 cardElement.classList.add('card-action');
-                cardElement.setAttribute('id', item.id)
+                cardElement.setAttribute('id', item.id.toString())
 
                 const titleElement = document.createElement('h2');
                 titleElement.classList.add('title', "mb-3");
@@ -74,7 +89,7 @@ export class Income {
                 modalActionElement.classList.add('modal-action');
 
                 const buttonDeleteElement = document.createElement('a');
-                buttonDeleteElement.setAttribute('href', '#/income/delete?id='+ item.id)
+                buttonDeleteElement.setAttribute('href', '#/income/delete?id=' + item.id)
                 buttonDeleteElement.classList.add('btn', 'btn-success', 'mr-3');
                 buttonDeleteElement.innerText = 'Да, удалить'
 
@@ -97,7 +112,9 @@ export class Income {
 
                 cardActionElement.appendChild(modalElement)
 
-                this.contentElement.appendChild(cardElement)
+                if (this.contentElement) {
+                    this.contentElement.appendChild(cardElement)
+                }
 
 
             })
@@ -108,7 +125,9 @@ export class Income {
         createCardElement.innerText = '+'
         createCardElement.setAttribute('id', 'add-income');
         createCardElement.setAttribute('href', '#/create-category-income');
-        this.contentElement.appendChild(createCardElement)
+        if (this.contentElement) {
+            this.contentElement.appendChild(createCardElement)
+        }
     }
 
 }
